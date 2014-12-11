@@ -223,14 +223,20 @@ DonationsPage.prototype = {
   },
 
   afterRender: function() {
+    var component = this;
+
     this.$('.payment').on('mouseup', function(ev) {
-      var tr = $(ev.currentTarget).closest('tr').data();
+      var tr = component.$(ev.currentTarget).closest('tr');
+      var data = tr.data();
+      var isMissing = tr.find('.missing').length;
 
       // Need to synchronously save the current url & host.
-      window.localStorage.url = tr.url;
-      window.localStorage.host = tr.host;
+      if (!isMissing) {
+        window.localStorage.url = data.url;
+        window.localStorage.host = data.host;
 
-      window.alert('You will now be redirected to the payment site.');
+        window.alert('You will now be redirected to the payment site.');
+      }
     });
 
     // Inject payment information for each entry.
